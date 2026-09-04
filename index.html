@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Simulador Profissional de Lógica Binária Ladder</title>
 
 <style>
@@ -13,290 +14,388 @@
 body{
     margin:0;
     font-family:Arial,Helvetica,sans-serif;
-    background:#0b1220;
+    background:#08111f;
     color:#e5e7eb;
 }
 
 header{
-    background:#111827;
-    padding:18px;
-    border-bottom:1px solid #263244;
+    background:linear-gradient(135deg,#0f172a,#172554);
+    padding:24px 16px;
+    text-align:center;
+    border-bottom:2px solid #2563eb;
 }
 
 header h1{
     margin:0;
-    font-size:22px;
+    font-size:26px;
     color:#fff;
 }
 
 header p{
-    margin:6px 0 0;
-    color:#94a3b8;
-    font-size:13px;
+    margin:8px 0 0;
+    color:#93c5fd;
 }
 
-.toolbar{
-    display:flex;
-    flex-wrap:wrap;
-    gap:10px;
-    padding:15px;
-    background:#0f172a;
-    border-bottom:1px solid #263244;
+.container{
+    max-width:1250px;
+    margin:auto;
+    padding:18px;
 }
 
-.toolbar label{
+.controls{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
+    gap:12px;
+    margin-bottom:18px;
+}
+
+.control-box{
+    background:#111c2e;
+    border:1px solid #263852;
+    border-radius:12px;
+    padding:14px;
+}
+
+.control-box label{
+    display:block;
     font-size:12px;
-    color:#94a3b8;
-    display:flex;
-    flex-direction:column;
-    gap:5px;
+    font-weight:bold;
+    color:#93c5fd;
+    margin-bottom:8px;
 }
 
 select,
 button{
-    border:1px solid #334155;
-    background:#1e293b;
-    color:#fff;
-    padding:10px 12px;
-    border-radius:7px;
+    width:100%;
+    min-height:44px;
+    border:0;
+    border-radius:8px;
+    padding:10px;
+    font-size:14px;
     font-weight:bold;
+}
+
+select{
+    background:#020617;
+    color:#fff;
+    border:1px solid #334155;
 }
 
 button{
     cursor:pointer;
+    transition:.2s;
 }
 
 button:hover{
-    background:#334155;
+    transform:translateY(-1px);
+    filter:brightness(1.1);
 }
 
 .btn-a{
-    border-color:#2563eb;
+    background:#2563eb;
+    color:white;
 }
 
 .btn-b{
-    border-color:#7c3aed;
+    background:#7c3aed;
+    color:white;
+}
+
+.btn-supply{
+    background:#059669;
+    color:white;
 }
 
 .btn-reset{
-    border-color:#dc2626;
-}
-
-.container{
-    padding:15px;
-    display:grid;
-    grid-template-columns:1fr;
-    gap:15px;
+    background:#dc2626;
+    color:white;
 }
 
 .card{
-    background:#111827;
-    border:1px solid #263244;
-    border-radius:10px;
+    background:#0f1b2d;
+    border:1px solid #263852;
+    border-radius:14px;
+    margin-bottom:18px;
     overflow:hidden;
+    box-shadow:0 8px 30px rgba(0,0,0,.2);
 }
 
 .card-title{
-    padding:12px 15px;
-    border-bottom:1px solid #263244;
+    background:#16243a;
+    padding:14px 16px;
+    font-size:15px;
     font-weight:bold;
-    color:#fff;
+    color:#bfdbfe;
+    border-bottom:1px solid #263852;
 }
 
 .card-body{
-    padding:15px;
+    padding:16px;
 }
+
+/* STATUS */
 
 .status-grid{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
+    grid-template-columns:repeat(auto-fit,minmax(145px,1fr));
     gap:10px;
 }
 
 .status{
-    background:#0f172a;
-    border:1px solid #263244;
-    border-radius:8px;
+    background:#07111f;
+    border:1px solid #263852;
+    border-radius:10px;
     padding:12px;
+    text-align:center;
 }
 
 .status small{
     display:block;
+    font-size:10px;
     color:#94a3b8;
-    margin-bottom:5px;
+    margin-bottom:6px;
 }
 
 .status strong{
-    font-size:20px;
+    font-size:23px;
 }
 
-.value-on{
+.status .on{
     color:#22c55e;
 }
 
-.value-off{
-    color:#ef4444;
+.status .off{
+    color:#64748b;
 }
+
+/* LADDER */
 
 #diagramWrap{
     width:100%;
     overflow:auto;
-    background:#020617;
-    border-radius:8px;
+    background:#030a13;
+    border:1px solid #24344d;
+    border-radius:10px;
 }
 
-svg{
+#ladder{
+    display:block;
     width:100%;
     min-width:850px;
     height:auto;
-    display:block;
 }
 
 .rail{
-    stroke:#64748b;
+    stroke:#94a3b8;
     stroke-width:6;
 }
 
-.wire{
-    stroke:#475569;
+.power-line{
+    stroke:#64748b;
     stroke-width:5;
-    fill:none;
 }
 
-.wire.live{
+.power-line.live{
     stroke:#22c55e;
-}
-
-.wire.output{
-    stroke:#f59e0b;
-}
-
-.wire.bypass{
-    stroke:#ef4444;
+    filter:drop-shadow(0 0 5px #22c55e);
 }
 
 .contact{
     fill:#111827;
-    stroke:#94a3b8;
+    stroke:#e5e7eb;
     stroke-width:4;
 }
 
 .contact.live{
     stroke:#22c55e;
+    filter:drop-shadow(0 0 7px #22c55e);
 }
 
 .contact.open{
     stroke:#ef4444;
 }
 
-.contact-text{
+.contact-label{
+    fill:#fff;
+    font-size:18px;
+    font-weight:bold;
+    text-anchor:middle;
+}
+
+.contact-type{
+    fill:#93c5fd;
+    font-size:13px;
+    font-weight:bold;
+    text-anchor:middle;
+}
+
+.contact-state{
+    fill:#facc15;
+    font-size:12px;
+    font-weight:bold;
+    text-anchor:middle;
+}
+
+.lamp{
+    fill:#111827;
+    stroke:#64748b;
+    stroke-width:4;
+}
+
+.lamp.on{
+    fill:#fde047;
+    stroke:#facc15;
+    filter:drop-shadow(0 0 15px #facc15);
+}
+
+.lamp-text{
     fill:#fff;
     font-size:16px;
     font-weight:bold;
     text-anchor:middle;
 }
 
-.label{
-    fill:#cbd5e1;
+.signal-label{
+    fill:#22c55e;
     font-size:14px;
     font-weight:bold;
 }
 
-.supply-label{
-    fill:#22c55e;
-    font-size:16px;
-    font-weight:bold;
+.signal-label.off{
+    fill:#64748b;
 }
 
-.lamp{
-    fill:#1e293b;
+.bypass-path{
+    fill:none;
     stroke:#64748b;
     stroke-width:4;
 }
 
-.lamp.on{
+.bypass-path.live{
+    stroke:#f59e0b;
+    filter:drop-shadow(0 0 6px #f59e0b);
+}
+
+.branch-label{
     fill:#f59e0b;
-    stroke:#fbbf24;
+    font-size:14px;
+    font-weight:bold;
 }
 
-.lamp-x{
-    stroke:#94a3b8;
-    stroke-width:3;
+/* INFO */
+
+.info-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+    gap:12px;
 }
 
-.lamp.on .lamp-x{
-    stroke:#fff;
+.info-box{
+    background:#07111f;
+    border:1px solid #263852;
+    border-radius:10px;
+    padding:14px;
+}
+
+.info-box small{
+    display:block;
+    color:#64748b;
+    margin-bottom:6px;
+    font-size:10px;
+    font-weight:bold;
+}
+
+.info-box strong{
+    color:#fff;
+    font-size:15px;
+}
+
+/* TRUTH TABLE */
+
+.table-wrap{
+    overflow:auto;
 }
 
 .truth{
     width:100%;
     border-collapse:collapse;
+    min-width:500px;
 }
 
 .truth th,
 .truth td{
     border:1px solid #334155;
-    padding:9px;
+    padding:11px;
     text-align:center;
 }
 
 .truth th{
-    background:#1e293b;
+    background:#172554;
+    color:#bfdbfe;
 }
 
 .truth td{
-    background:#0f172a;
+    background:#08111f;
 }
 
-.truth tr.active td{
-    background:#14532d;
+.truth .zero{
+    color:#94a3b8;
     font-weight:bold;
 }
 
-.info{
-    color:#cbd5e1;
-    line-height:1.6;
-    font-size:14px;
+.truth .one{
+    color:#22c55e;
+    font-weight:bold;
 }
 
-.formula{
-    display:inline-block;
-    margin-top:8px;
-    padding:8px 12px;
-    background:#020617;
-    border:1px solid #334155;
-    border-radius:6px;
-    font-family:monospace;
-    color:#f8fafc;
-}
+/* MESSAGE */
 
 .message{
+    background:#0f1b2d;
+    border:1px solid #263852;
+    border-radius:10px;
+    padding:14px;
+    text-align:center;
+    color:#93c5fd;
+    margin-bottom:20px;
+}
+
+.legend{
+    display:flex;
+    flex-wrap:wrap;
+    gap:15px;
     padding:12px;
-    border-radius:7px;
-    background:#0f172a;
-    border:1px solid #263244;
-    color:#cbd5e1;
+    background:#07111f;
+    border-radius:8px;
+    margin-top:12px;
+    font-size:12px;
 }
 
-.error{
-    background:#450a0a;
-    border-color:#ef4444;
-    color:#fecaca;
+.legend span{
+    display:flex;
+    align-items:center;
+    gap:6px;
 }
 
-@media(max-width:700px){
+.dot{
+    width:12px;
+    height:12px;
+    border-radius:50%;
+    display:inline-block;
+}
+
+.dot.green{background:#22c55e;}
+.dot.red{background:#ef4444;}
+.dot.yellow{background:#facc15;}
+.dot.gray{background:#64748b;}
+
+@media(max-width:600px){
     header h1{
-        font-size:18px;
+        font-size:21px;
     }
 
-    .toolbar{
-        flex-direction:column;
-    }
-
-    .toolbar label,
-    .toolbar select,
-    .toolbar button{
-        width:100%;
+    .container{
+        padding:10px;
     }
 }
 </style>
@@ -305,47 +404,81 @@ svg{
 <body>
 
 <header>
-    <h1>Simulador Profissional de Lógica Binária Ladder</h1>
-    <p>Simulação de contatos NA/NF, alimentação, sinal, saída e tabela-verdade.</p>
+    <h1>SIMULADOR PROFISSIONAL DE LÓGICA BINÁRIA</h1>
+    <p>Ladder • Contatos NA/NF • Série • Paralelo • Portas Booleanas • Bypass</p>
 </header>
-
-<div class="toolbar">
-
-    <label>
-        FUNÇÃO LÓGICA
-        <select id="logicType">
-            <option value="BUFFER">BUFFER</option>
-            <option value="NOT">NOT</option>
-            <option value="AND">AND</option>
-            <option value="NAND">NAND</option>
-            <option value="OR">OR</option>
-            <option value="NOR">NOR</option>
-            <option value="XOR">XOR</option>
-            <option value="XNOR">XNOR</option>
-            <option value="SERIES">SERIES</option>
-            <option value="PARALLEL">PARALLEL</option>
-            <option value="BYPASS">BYPASS</option>
-        </select>
-    </label>
-
-    <label>
-        ALIMENTAÇÃO
-        <select id="supply">
-            <option value="1">24V — LIGADA</option>
-            <option value="0">0V — DESLIGADA</option>
-        </select>
-    </label>
-
-    <button class="btn-a" id="btnA">ALTERAR A</button>
-    <button class="btn-b" id="btnB">ALTERAR B</button>
-    <button class="btn-reset" id="btnReset">RESET</button>
-
-</div>
 
 <div class="container">
 
+    <!-- CONTROLES -->
+
+    <div class="controls">
+
+        <div class="control-box">
+            <label>TIPO DE LÓGICA</label>
+
+            <select id="logicType">
+
+                <option value="BUFFER">BUFFER — SEGUIDOR</option>
+                <option value="NOT">NOT — NÃO</option>
+                <option value="AND">AND — E</option>
+                <option value="NAND">NAND — NÃO E</option>
+                <option value="OR">OR — OU</option>
+                <option value="NOR">NOR — NÃO OU</option>
+                <option value="XOR">XOR — OU EXCLUSIVO</option>
+                <option value="XNOR">XNOR — IGUALDADE</option>
+                <option value="SERIES">SÉRIE — CONTATOS EM SÉRIE</option>
+                <option value="PARALLEL">PARALELO — CONTATOS EM PARALELO</option>
+                <option value="BYPASS">BYPASS — DESVIO / SHUNT</option>
+
+            </select>
+        </div>
+
+        <div class="control-box">
+            <label>ALIMENTAÇÃO</label>
+
+            <select id="supply">
+
+                <option value="1">24 V — ENERGIZADA</option>
+                <option value="0">0 V — DESENERGIZADA</option>
+
+            </select>
+        </div>
+
+        <div class="control-box">
+            <label>AÇÃO</label>
+
+            <button class="btn-a" id="btnA">
+                ALTERAR A
+            </button>
+        </div>
+
+        <div class="control-box">
+            <label>AÇÃO</label>
+
+            <button class="btn-b" id="btnB">
+                ALTERAR B
+            </button>
+        </div>
+
+        <div class="control-box">
+            <label>CONTROLE</label>
+
+            <button class="btn-reset" id="btnReset">
+                RESET
+            </button>
+        </div>
+
+    </div>
+
+
+    <!-- STATUS -->
+
     <div class="card">
-        <div class="card-title">STATUS DA SIMULAÇÃO</div>
+
+        <div class="card-title">
+            STATUS DA SIMULAÇÃO
+        </div>
 
         <div class="card-body">
 
@@ -372,13 +505,13 @@ svg{
                 </div>
 
                 <div class="status">
-                    <small>SAÍDA Y</small>
-                    <strong id="statusY">0</strong>
+                    <small>BYPASS</small>
+                    <strong id="statusBypass">0</strong>
                 </div>
 
                 <div class="status">
-                    <small>BYPASS</small>
-                    <strong id="statusBypass">0</strong>
+                    <small>SAÍDA Y</small>
+                    <strong id="statusY">0</strong>
                 </div>
 
             </div>
@@ -387,45 +520,87 @@ svg{
     </div>
 
 
+    <!-- LADDER -->
+
     <div class="card">
 
         <div class="card-title">
-            DIAGRAMA LADDER
+            DIAGRAMA LADDER INTERATIVO
         </div>
 
         <div class="card-body">
 
             <div id="diagramWrap">
-                <svg id="ladder" viewBox="0 0 1000 500">
+
+                <svg id="ladder"
+                     viewBox="0 0 1000 520"
+                     xmlns="http://www.w3.org/2000/svg">
+
+                    <!-- TRILHOS -->
 
                     <line class="rail"
-                          x1="100"
-                          y1="50"
-                          x2="100"
-                          y2="450"/>
+                          x1="90"
+                          y1="45"
+                          x2="90"
+                          y2="470"/>
 
                     <line class="rail"
-                          x1="900"
-                          y1="50"
-                          x2="900"
-                          y2="450"/>
+                          x1="910"
+                          y1="45"
+                          x2="910"
+                          y2="470"/>
 
-                    <text x="75"
-                          y="35"
-                          class="supply-label">+24V</text>
+                    <text x="65"
+                          y="30"
+                          fill="#22c55e"
+                          font-size="18"
+                          font-weight="bold">
+                        +24V
+                    </text>
 
                     <text x="875"
-                          y="475"
-                          class="label">0V</text>
+                          y="500"
+                          fill="#94a3b8"
+                          font-size="18"
+                          font-weight="bold">
+                        0V
+                    </text>
 
                     <g id="circuit"></g>
 
                 </svg>
+
+            </div>
+
+            <div class="legend">
+
+                <span>
+                    <i class="dot green"></i>
+                    Caminho energizado
+                </span>
+
+                <span>
+                    <i class="dot red"></i>
+                    Contato aberto
+                </span>
+
+                <span>
+                    <i class="dot yellow"></i>
+                    Bypass conduzindo
+                </span>
+
+                <span>
+                    <i class="dot gray"></i>
+                    Sem sinal
+                </span>
+
             </div>
 
         </div>
     </div>
 
+
+    <!-- DEFINIÇÃO -->
 
     <div class="card">
 
@@ -435,11 +610,43 @@ svg{
 
         <div class="card-body">
 
-            <div id="logicInfo" class="info"></div>
+            <div class="info-grid">
+
+                <div class="info-box">
+                    <small>EXPRESSÃO BOOLEANA</small>
+                    <strong id="expression">
+                        Y = A
+                    </strong>
+                </div>
+
+                <div class="info-box">
+                    <small>EQUIVALENTE LADDER</small>
+                    <strong id="ladderInfo">
+                        A — NA — série
+                    </strong>
+                </div>
+
+                <div class="info-box">
+                    <small>CONDIÇÃO DA SAÍDA</small>
+                    <strong id="condition">
+                        Y acompanha A
+                    </strong>
+                </div>
+
+                <div class="info-box">
+                    <small>ESTADO DA LÂMPADA</small>
+                    <strong id="lampStatus">
+                        0 — APAGADA
+                    </strong>
+                </div>
+
+            </div>
 
         </div>
     </div>
 
+
+    <!-- TABELA VERDADE -->
 
     <div class="card">
 
@@ -449,13 +656,17 @@ svg{
 
         <div class="card-body">
 
-            <table class="truth">
+            <div class="table-wrap">
 
-                <thead id="truthHead"></thead>
+                <table class="truth">
 
-                <tbody id="truthBody"></tbody>
+                    <thead id="truthHead"></thead>
 
-            </table>
+                    <tbody id="truthBody"></tbody>
+
+                </table>
+
+            </div>
 
         </div>
     </div>
@@ -470,63 +681,82 @@ svg{
 
 <script>
 
-"use strict";
-
 /* =========================================================
-   ESTADO
+   ESTADO PRINCIPAL
 ========================================================= */
 
 const state = {
     A: 0,
     B: 0,
     supply: 1,
-    logic: "BUFFER",
-    Y: 0,
-    signal: 0,
-    bypass: 0
+    logic: "BUFFER"
 };
 
 
 /* =========================================================
-   FUNÇÃO LÓGICA
+   ELEMENTOS
 ========================================================= */
 
-function calculate(a, b, logic){
+const logicType = document.getElementById("logicType");
+const supplySelect = document.getElementById("supply");
 
-    a = Number(a);
-    b = Number(b);
+const statusA = document.getElementById("statusA");
+const statusB = document.getElementById("statusB");
+const statusSupply = document.getElementById("statusSupply");
+const statusSignal = document.getElementById("statusSignal");
+const statusBypass = document.getElementById("statusBypass");
+const statusY = document.getElementById("statusY");
+
+const circuit = document.getElementById("circuit");
+
+const expression = document.getElementById("expression");
+const ladderInfo = document.getElementById("ladderInfo");
+const condition = document.getElementById("condition");
+const lampStatus = document.getElementById("lampStatus");
+
+const truthHead = document.getElementById("truthHead");
+const truthBody = document.getElementById("truthBody");
+
+const message = document.getElementById("message");
+
+
+/* =========================================================
+   FUNÇÃO PRINCIPAL DAS PORTAS
+========================================================= */
+
+function calculateY(A, B, logic){
 
     switch(logic){
 
         case "BUFFER":
-            return a;
+            return A;
 
         case "NOT":
-            return a === 0 ? 1 : 0;
+            return A ? 0 : 1;
 
         case "AND":
-            return (a === 1 && b === 1) ? 1 : 0;
+            return A && B ? 1 : 0;
 
         case "NAND":
-            return (a === 1 && b === 1) ? 0 : 1;
+            return A && B ? 0 : 1;
 
         case "OR":
-            return (a === 1 || b === 1) ? 1 : 0;
+            return A || B ? 1 : 0;
 
         case "NOR":
-            return (a === 1 || b === 1) ? 0 : 1;
+            return A || B ? 0 : 1;
 
         case "XOR":
-            return a !== b ? 1 : 0;
+            return A !== B ? 1 : 0;
 
         case "XNOR":
-            return a === b ? 1 : 0;
+            return A === B ? 1 : 0;
 
         case "SERIES":
-            return (a === 1 && b === 1) ? 1 : 0;
+            return A && B ? 1 : 0;
 
         case "PARALLEL":
-            return (a === 1 || b === 1) ? 1 : 0;
+            return A || B ? 1 : 0;
 
         default:
             return 0;
@@ -541,1156 +771,156 @@ function calculate(a, b, logic){
 function calculateBypass(){
 
     /*
-        A = NF
+       Bypass:
+       A é o contato principal NF.
+       B representa o contato NF do desvio.
 
-        A=0 -> contato fechado
-        A=1 -> contato aberto
+       Para visualização didática:
+       A=0 -> sinal passa pelo contato NF.
+       A=1 -> contato A abre.
 
-        B = NF
+       B=0 -> bypass NF fechado e desvia o sinal.
+       B=1 -> bypass NF aberto e deixa o sinal seguir
+              pelo caminho principal.
 
-        B=0 -> bypass fechado
-        B=1 -> bypass aberto
-
-        Y = ¬A · B
+       Assim:
+       sinalApósA = NOT(A)
+       bypass conduz = sinalApósA AND NOT(B)
+       Y = sinalApósA AND B
     */
 
-    const mainSignal =
-        state.supply === 1 &&
-        state.A === 0;
+    const signalAfterA = state.A ? 0 : 1;
 
-    const bypassActive =
-        mainSignal &&
-        state.B === 0;
+    const bypassConducting =
+        signalAfterA && !state.B ? 1 : 0;
 
-    const lamp =
-        mainSignal &&
-        state.B === 1;
+    const Y =
+        signalAfterA && state.B ? 1 : 0;
 
     return {
-        signal: mainSignal ? 1 : 0,
-        bypass: bypassActive ? 1 : 0,
-        Y: lamp ? 1 : 0
+        signalAfterA,
+        bypassConducting,
+        Y
     };
 }
 
 
 /* =========================================================
-   ALTERAR A
+   ATUALIZAÇÃO
 ========================================================= */
 
-function toggleA(){
+function update(){
 
-    state.A = state.A === 0 ? 1 : 0;
+    state.logic = logicType.value;
+    state.supply = Number(supplySelect.value);
 
-    update();
-}
+    let Y = 0;
+    let signal = 0;
+    let bypass = 0;
 
+    if(state.supply === 0){
 
-/* =========================================================
-   ALTERAR B
-========================================================= */
+        Y = 0;
+        signal = 0;
+        bypass = 0;
 
-function toggleB(){
+    }else{
 
-    state.B = state.B === 0 ? 1 : 0;
+        if(state.logic === "BYPASS"){
 
-    update();
-}
+            const result = calculateBypass();
 
+            signal = result.signalAfterA;
+            bypass = result.bypassConducting;
+            Y = result.Y;
 
-/* =========================================================
-   RESET
-========================================================= */
+        }else{
 
-function resetAll(){
+            Y = calculateY(
+                state.A,
+                state.B,
+                state.logic
+            );
 
-    state.A = 0;
-    state.B = 0;
-    state.supply = 1;
-
-    update();
-}
-
-
-/* =========================================================
-   CONTATO
-========================================================= */
-
-function contact(x, y, label, value, nc, input){
-
-    const isClosed =
-        nc
-            ? value === 0
-            : value === 1;
-
-    const contactClass =
-        isClosed
-            ? "contact live"
-            : "contact open";
-
-    const text =
-        nc
-            ? "NF"
-            : "NA";
-
-    return `
-        <g>
-
-            <rect
-                x="${x - 40}"
-                y="${y - 35}"
-                width="80"
-                height="70"
-                rx="8"
-                class="${contactClass}"
-            />
-
-            <text
-                x="${x}"
-                y="${y - 7}"
-                class="contact-text"
-            >${text}</text>
-
-            <text
-                x="${x}"
-                y="${y + 18}"
-                class="contact-text"
-            >${label}=${value}</text>
-
-        </g>
-    `;
-}
-
-
-/* =========================================================
-   LÂMPADA
-========================================================= */
-
-function lamp(x, y, on){
-
-    const cls = on
-        ? "lamp on"
-        : "lamp";
-
-    return `
-        <g>
-
-            <circle
-                cx="${x}"
-                cy="${y}"
-                r="30"
-                class="${cls}"
-            />
-
-            <line
-                x1="${x - 14}"
-                y1="${y - 14}"
-                x2="${x + 14}"
-                y2="${y + 14}"
-                class="lamp-x"
-            />
-
-            <line
-                x1="${x + 14}"
-                y1="${y - 14}"
-                x2="${x - 14}"
-                y2="${y + 14}"
-                class="lamp-x"
-            />
-
-            <text
-                x="${x}"
-                y="${y + 55}"
-                class="label"
-                text-anchor="middle"
-            >LÂMPADA Y</text>
-
-        </g>
-    `;
-}
-
-
-/* =========================================================
-   FIO
-========================================================= */
-
-function wire(x1, y1, x2, y2, live, extraClass=""){
-
-    let cls = "wire";
-
-    if(live){
-        cls += " live";
+            signal = Y;
+        }
     }
 
-    if(extraClass){
-        cls += " " + extraClass;
-    }
 
-    return `
-        <line
-            x1="${x1}"
-            y1="${y1}"
-            x2="${x2}"
-            y2="${y2}"
-            class="${cls}"
-        />
-    `;
-}
+    /* STATUS */
 
+    statusA.textContent = state.A;
+    statusB.textContent = state.B;
+    statusSupply.textContent =
+        state.supply ? "1 — 24V" : "0 — 0V";
 
-/* =========================================================
-   RENDER BUFFER
-========================================================= */
+    statusSignal.textContent = signal;
+    statusBypass.textContent = bypass;
+    statusY.textContent = Y;
 
-function renderBuffer(){
 
-    const A = state.A;
+    setStatusColor(statusA,state.A);
+    setStatusColor(statusB,state.B);
+    setStatusColor(statusSignal,signal);
+    setStatusColor(statusBypass,bypass);
+    setStatusColor(statusY,Y);
 
-    const closed = A === 1;
 
-    let html = "";
+    /* INFORMAÇÕES */
 
-    html += wire(100,250,250,250,state.supply === 1);
+    updateInfo(Y);
 
-    html += contact(
-        300,
-        250,
-        "A",
-        A,
-        false,
-        "A"
-    );
 
-    html += wire(
-        340,
-        250,
-        650,
-        250,
-        state.supply === 1 && closed
-    );
+    /* DIAGRAMA */
 
-    html += lamp(
-        700,
-        250,
-        state.Y === 1
-    );
-
-    html += wire(
-        730,
-        250,
-        900,
-        250,
-        state.Y === 1
-    );
-
-    return html;
-}
-
-
-/* =========================================================
-   RENDER NOT
-========================================================= */
-
-function renderNot(){
-
-    const A = state.A;
-
-    const closed = A === 0;
-
-    let html = "";
-
-    html += wire(
-        100,
-        250,
-        250,
-        250,
-        state.supply === 1
-    );
-
-    html += contact(
-        300,
-        250,
-        "A",
-        A,
-        true,
-        "A"
-    );
-
-    html += wire(
-        340,
-        250,
-        650,
-        250,
-        state.supply === 1 && closed
-    );
-
-    html += lamp(
-        700,
-        250,
-        state.Y === 1
-    );
-
-    html += wire(
-        730,
-        250,
-        900,
-        250,
-        state.Y === 1
-    );
-
-    return html;
-}
-
-
-/* =========================================================
-   RENDER AND / SERIES
-========================================================= */
-
-function renderAnd(){
-
-    const A = state.A;
-    const B = state.B;
-
-    const liveA =
-        state.supply === 1 &&
-        A === 1;
-
-    const liveB =
-        liveA &&
-        B === 1;
-
-    let html = "";
-
-    html += wire(
-        100,250,
-        210,250,
-        state.supply === 1
-    );
-
-    html += contact(
-        260,
-        250,
-        "A",
-        A,
-        false,
-        "A"
-    );
-
-    html += wire(
-        300,250,
-        420,250,
-        liveA
-    );
-
-    html += contact(
-        470,
-        250,
-        "B",
-        B,
-        false,
-        "B"
-    );
-
-    html += wire(
-        510,250,
-        650,250,
-        liveB
-    );
-
-    html += lamp(
-        700,
-        250,
-        state.Y === 1
-    );
-
-    html += wire(
-        730,250,
-        900,250,
-        state.Y === 1
-    );
-
-    return html;
-}
-
-
-/* =========================================================
-   RENDER NAND
-========================================================= */
-
-function renderNand(){
-
-    const A = state.A;
-    const B = state.B;
-
-    const branchA =
-        state.supply === 1 &&
-        A === 0;
-
-    const branchB =
-        state.supply === 1 &&
-        B === 0;
-
-    let html = "";
-
-    /* alimentação */
-
-    html += wire(
-        100,250,
-        180,250,
-        state.supply === 1
-    );
-
-    /* barramento esquerdo */
-
-    html += wire(
-        180,150,
-        180,350,
-        state.supply === 1
-    );
-
-    /* ramo A */
-
-    html += wire(
-        180,150,
-        220,150,
-        branchA
-    );
-
-    html += contact(
-        270,
-        150,
-        "A",
-        A,
-        true,
-        "A"
-    );
-
-    html += wire(
-        310,150,
-        650,150,
-        branchA
-    );
-
-    /* ramo B */
-
-    html += wire(
-        180,350,
-        220,350,
-        branchB
-    );
-
-    html += contact(
-        270,
-        350,
-        "B",
-        B,
-        true,
-        "B"
-    );
-
-    html += wire(
-        310,350,
-        650,350,
-        branchB
-    );
-
-    /* união */
-
-    html += wire(
-        650,150,
-        650,250,
-        state.Y === 1
-    );
-
-    html += wire(
-        650,350,
-        650,250,
-        state.Y === 1
-    );
-
-    html += wire(
-        650,250,
-        670,250,
-        state.Y === 1
-    );
-
-    html += lamp(
-        710,
-        250,
-        state.Y === 1
-    );
-
-    html += wire(
-        740,
-        250,
-        900,
-        250,
-        state.Y === 1
-    );
-
-    return html;
-}
-
-
-/* =========================================================
-   RENDER OR / PARALLEL
-========================================================= */
-
-function renderOr(){
-
-    const A = state.A;
-    const B = state.B;
-
-    const branchA =
-        state.supply === 1 &&
-        A === 1;
-
-    const branchB =
-        state.supply === 1 &&
-        B === 1;
-
-    let html = "";
-
-    html += wire(
-        100,250,
-        180,250,
-        state.supply === 1
-    );
-
-    html += wire(
-        180,150,
-        180,350,
-        state.supply === 1
-    );
-
-    /* A */
-
-    html += wire(
-        180,150,
-        220,150,
-        branchA
-    );
-
-    html += contact(
-        270,
-        150,
-        "A",
-        A,
-        false,
-        "A"
-    );
-
-    html += wire(
-        310,150,
-        650,150,
-        branchA
-    );
-
-    /* B */
-
-    html += wire(
-        180,350,
-        220,350,
-        branchB
-    );
-
-    html += contact(
-        270,
-        350,
-        "B",
-        B,
-        false,
-        "B"
-    );
-
-    html += wire(
-        310,350,
-        650,350,
-        branchB
-    );
-
-    html += wire(
-        650,150,
-        650,250,
-        state.Y === 1
-    );
-
-    html += wire(
-        650,350,
-        650,250,
-        state.Y === 1
-    );
-
-    html += wire(
-        650,250,
-        670,250,
-        state.Y === 1
-    );
-
-    html += lamp(
-        710,
-        250,
-        state.Y === 1
-    );
-
-    html += wire(
-        740,250,
-        900,250,
-        state.Y === 1
-    );
-
-    return html;
-}
-
-
-/* =========================================================
-   RENDER NOR
-========================================================= */
-
-function renderNor(){
-
-    const A = state.A;
-    const B = state.B;
-
-    const liveA =
-        state.supply === 1 &&
-        A === 0;
-
-    const liveB =
-        liveA &&
-        B === 0;
-
-    let html = "";
-
-    html += wire(
-        100,250,
-        210,250,
-        state.supply === 1
-    );
-
-    html += contact(
-        260,
-        250,
-        "A",
-        A,
-        true,
-        "A"
-    );
-
-    html += wire(
-        300,250,
-        420,250,
-        liveA
-    );
-
-    html += contact(
-        470,
-        250,
-        "B",
-        B,
-        true,
-        "B"
-    );
-
-    html += wire(
-        510,250,
-        650,250,
-        liveB
-    );
-
-    html += lamp(
-        700,
-        250,
-        state.Y === 1
-    );
-
-    html += wire(
-        730,250,
-        900,250,
-        state.Y === 1
-    );
-
-    return html;
-}
-
-
-/* =========================================================
-   XOR
-========================================================= */
-
-function renderXor(){
-
-    const A = state.A;
-    const B = state.B;
-
-    /*
-       ramo 1:
-       A NF + B NA
-       ¬A · B
-
-       ramo 2:
-       A NA + B NF
-       A · ¬B
-    */
-
-    const branch1 =
-        state.supply === 1 &&
-        A === 0 &&
-        B === 1;
-
-    const branch2 =
-        state.supply === 1 &&
-        A === 1 &&
-        B === 0;
-
-    let html = "";
-
-    html += wire(
-        100,250,
-        170,250,
-        state.supply === 1
-    );
-
-    html += wire(
-        170,140,
-        170,360,
-        state.supply === 1
-    );
-
-    /* ramo 1 */
-
-    html += wire(
-        170,140,
-        220,140,
-        state.supply === 1
-    );
-
-    html += contact(
-        270,
-        140,
-        "A",
-        A,
-        true,
-        "A"
-    );
-
-    html += wire(
-        310,140,
-        390,140,
-        A === 0
-    );
-
-    html += contact(
-        440,
-        140,
-        "B",
-        B,
-        false,
-        "B"
-    );
-
-    html += wire(
-        480,140,
-        650,140,
-        branch1
-    );
-
-    /* ramo 2 */
-
-    html += wire(
-        170,360,
-        220,360,
-        state.supply === 1
-    );
-
-    html += contact(
-        270,
-        360,
-        "A",
-        A,
-        false,
-        "A"
-    );
-
-    html += wire(
-        310,360,
-        390,360,
-        A === 1
-    );
-
-    html += contact(
-        440,
-        360,
-        "B",
-        B,
-        true,
-        "B"
-    );
-
-    html += wire(
-        480,360,
-        650,360,
-        branch2
-    );
-
-    /* união */
-
-    html += wire(
-        650,140,
-        650,250,
-        branch1
-    );
-
-    html += wire(
-        650,360,
-        650,250,
-        branch2
-    );
-
-    html += lamp(
-        710,
-        250,
-        state.Y === 1
-    );
-
-    html += wire(
-        740,250,
-        900,250,
-        state.Y === 1
-    );
-
-    return html;
-}
-
-
-/* =========================================================
-   XNOR
-========================================================= */
-
-function renderXnor(){
-
-    const A = state.A;
-    const B = state.B;
-
-    /*
-       ramo 1:
-       A NF + B NF
-       ¬A · ¬B
-
-       ramo 2:
-       A NA + B NA
-       A · B
-    */
-
-    const branch1 =
-        state.supply === 1 &&
-        A === 0 &&
-        B === 0;
-
-    const branch2 =
-        state.supply === 1 &&
-        A === 1 &&
-        B === 1;
-
-    let html = "";
-
-    html += wire(
-        100,250,
-        170,250,
-        state.supply === 1
-    );
-
-    html += wire(
-        170,140,
-        170,360,
-        state.supply === 1
-    );
-
-    /* ramo 1 */
-
-    html += wire(
-        170,140,
-        220,140,
-        state.supply === 1
-    );
-
-    html += contact(
-        270,
-        140,
-        "A",
-        A,
-        true,
-        "A"
-    );
-
-    html += wire(
-        310,140,
-        390,140,
-        A === 0
-    );
-
-    html += contact(
-        440,
-        140,
-        "B",
-        B,
-        true,
-        "B"
-    );
-
-    html += wire(
-        480,140,
-        650,140,
-        branch1
-    );
-
-    /* ramo 2 */
-
-    html += wire(
-        170,360,
-        220,360,
-        state.supply === 1
-    );
-
-    html += contact(
-        270,
-        360,
-        "A",
-        A,
-        false,
-        "A"
-    );
-
-    html += wire(
-        310,360,
-        390,360,
-        A === 1
-    );
-
-    html += contact(
-        440,
-        360,
-        "B",
-        B,
-        false,
-        "B"
-    );
-
-    html += wire(
-        480,360,
-        650,360,
-        branch2
-    );
-
-    /* união */
-
-    html += wire(
-        650,140,
-        650,250,
-        branch1
-    );
-
-    html += wire(
-        650,360,
-        650,250,
-        branch2
-    );
-
-    html += lamp(
-        710,
-        250,
-        state.Y === 1
-    );
-
-    html += wire(
-        740,250,
-        900,250,
-        state.Y === 1
-    );
-
-    return html;
-}
-
-
-/* =========================================================
-   BYPASS
-========================================================= */
-
-function renderBypass(){
-
-    const A = state.A;
-    const B = state.B;
-
-    const main =
-        state.supply === 1 &&
-        A === 0;
-
-    const bypass =
-        main &&
-        B === 0;
-
-    const lampOn =
-        main &&
-        B === 1;
-
-    let html = "";
-
-    html += wire(
-        100,250,
-        180,250,
-        state.supply === 1
-    );
-
-    html += contact(
-        230,
-        250,
-        "A",
-        A,
-        true,
-        "A"
-    );
-
-    html += wire(
-        270,250,
-        400,250,
-        main
-    );
-
-    /* derivação */
-
-    html += wire(
-        400,150,
-        400,350,
-        main
-    );
-
-    /* caminho da lâmpada */
-
-    html += wire(
-        400,150,
-        500,150,
-        lampOn
-    );
-
-    html += lamp(
-        580,
-        150,
-        lampOn
-    );
-
-    html += wire(
-        610,150,
-        750,150,
-        lampOn
-    );
-
-    html += wire(
-        750,150,
-        750,250,
-        lampOn
-    );
-
-    /* caminho bypass */
-
-    html += wire(
-        400,350,
-        500,350,
+    drawLadder(
+        Y,
+        signal,
         bypass
     );
 
-    html += contact(
-        550,
-        350,
-        "B",
-        B,
-        true,
-        "B"
-    );
 
-    html += wire(
-        590,350,
-        750,350,
-        bypass
-    );
+    /* TABELA */
 
-    html += wire(
-        750,350,
-        750,250,
-        bypass
-    );
+    drawTruthTable();
 
-    /* retorno */
 
-    html += wire(
-        750,250,
-        900,250,
-        lampOn
-    );
+    /* MENSAGEM */
 
-    return html;
+    if(state.supply === 0){
+
+        message.textContent =
+            "Alimentação desligada: 0 V. Nenhum caminho está energizado.";
+
+    }else if(Y){
+
+        message.textContent =
+            "Circuito energizado: existe caminho condutor até a saída Y.";
+
+    }else{
+
+        message.textContent =
+            "Circuito sem saída: Y permanece desligada.";
+    }
 }
 
 
 /* =========================================================
-   RENDER GERAL
+   CORES DOS STATUS
 ========================================================= */
 
-function render(){
+function setStatusColor(element,value){
 
-    const circuit =
-        document.getElementById("circuit");
+    element.classList.remove("on","off");
 
-    if(!circuit){
-        throw new Error("Elemento SVG #circuit não encontrado.");
+    if(value === 1){
+
+        element.classList.add("on");
+
+    }else{
+
+        element.classList.add("off");
     }
-
-    let html = "";
-
-    switch(state.logic){
-
-        case "BUFFER":
-            html = renderBuffer();
-            break;
-
-        case "NOT":
-            html = renderNot();
-            break;
-
-        case "AND":
-        case "SERIES":
-            html = renderAnd();
-            break;
-
-        case "NAND":
-            html = renderNand();
-            break;
-
-        case "OR":
-        case "PARALLEL":
-            html = renderOr();
-            break;
-
-        case "NOR":
-            html = renderNor();
-            break;
-
-        case "XOR":
-            html = renderXor();
-            break;
-
-        case "XNOR":
-            html = renderXnor();
-            break;
-
-        case "BYPASS":
-            html = renderBypass();
-            break;
-
-        default:
-            html = "";
-    }
-
-    circuit.innerHTML = html;
 }
 
 
@@ -1698,413 +928,1573 @@ function render(){
    INFORMAÇÕES DA FUNÇÃO
 ========================================================= */
 
-function updateLogicInfo(){
+function updateInfo(Y){
 
-    const info =
-        document.getElementById("logicInfo");
-
-    let title = "";
-    let formula = "";
-    let description = "";
+    let exp = "";
+    let ladder = "";
+    let cond = "";
 
     switch(state.logic){
 
         case "BUFFER":
 
-            title = "BUFFER";
-            formula = "Y = A";
-            description =
-                "Contato A normalmente aberto (NA) em série com a carga. Quando A=1, o contato fecha e a saída fica em 1.";
+            exp = "Y = A";
+
+            ladder =
+                "A — NA — em série com a carga";
+
+            cond =
+                "Y acompanha diretamente o estado de A";
 
             break;
+
 
         case "NOT":
 
-            title = "NOT";
-            formula = "Y = ¬A";
-            description =
-                "Contato A normalmente fechado (NF) em série com a carga. Quando A=0, o contato conduz. Quando A=1, abre.";
+            exp = "Y = ¬A";
+
+            ladder =
+                "A — NF — em série com a carga";
+
+            cond =
+                "A=0 fecha o contato; A=1 abre";
 
             break;
+
 
         case "AND":
 
-            title = "AND";
-            formula = "Y = A · B";
-            description =
-                "Dois contatos NA em série. Os dois precisam estar em 1 para energizar a saída.";
+            exp = "Y = A · B";
+
+            ladder =
+                "A — NA — série — B — NA";
+
+            cond =
+                "Y=1 somente quando A=1 e B=1";
 
             break;
+
 
         case "NAND":
 
-            title = "NAND";
-            formula = "Y = ¬(A · B)";
-            description =
-                "Dois contatos NF em paralelo. A saída fica em 1 para 00, 01 e 10, e fica em 0 somente para 11.";
+            exp = "Y = ¬(A · B)";
+
+            ladder =
+                "Implementação Ladder equivalente com contatos NF";
+
+            cond =
+                "Y=0 somente quando A=1 e B=1";
 
             break;
+
 
         case "OR":
 
-            title = "OR";
-            formula = "Y = A + B";
-            description =
-                "Dois contatos NA em paralelo. Basta A ou B estar em 1 para energizar a saída.";
+            exp = "Y = A + B";
+
+            ladder =
+                "A — NA — paralelo — B — NA";
+
+            cond =
+                "Y=1 quando A ou B estiver em 1";
 
             break;
+
 
         case "NOR":
 
-            title = "NOR";
-            formula = "Y = ¬(A + B)";
-            description =
-                "Dois contatos NF em série. A saída somente fica em 1 quando A=0 e B=0.";
+            exp = "Y = ¬(A + B)";
+
+            ladder =
+                "A — NF — série — B — NF";
+
+            cond =
+                "Y=1 somente quando A=0 e B=0";
 
             break;
+
 
         case "XOR":
 
-            title = "XOR";
-            formula = "Y = (¬A · B) + (A · ¬B)";
-            description =
-                "Dois ramos paralelos: A NF + B NA e A NA + B NF. A saída fica em 1 quando as entradas são diferentes.";
+            exp = "Y = A ⊕ B";
+
+            ladder =
+                "(A NF + B NA) paralelo com (A NA + B NF)";
+
+            cond =
+                "Y=1 quando A e B forem diferentes";
 
             break;
+
 
         case "XNOR":
 
-            title = "XNOR";
-            formula = "Y = (¬A · ¬B) + (A · B)";
-            description =
-                "Dois ramos paralelos: A NF + B NF e A NA + B NA. A saída fica em 1 quando as entradas são iguais.";
+            exp = "Y = ¬(A ⊕ B)";
+
+            ladder =
+                "(A NF + B NF) paralelo com (A NA + B NA)";
+
+            cond =
+                "Y=1 quando A e B forem iguais";
 
             break;
+
 
         case "SERIES":
 
-            title = "SERIES";
-            formula = "Y = A · B";
-            description =
-                "Ligação em série equivalente à função AND.";
+            exp = "Y = A · B";
+
+            ladder =
+                "A — NA — B — NA — carga";
+
+            cond =
+                "Os dois contatos precisam conduzir";
 
             break;
+
 
         case "PARALLEL":
 
-            title = "PARALLEL";
-            formula = "Y = A + B";
-            description =
-                "Ligação em paralelo equivalente à função OR.";
+            exp = "Y = A + B";
+
+            ladder =
+                "A — NA — paralelo com B — NA";
+
+            cond =
+                "Um dos dois caminhos conduz";
 
             break;
+
 
         case "BYPASS":
 
-            title = "BYPASS";
-            formula = "Y = ¬A · B";
-            description =
-                "Modelo Ladder de bypass: A é NF no caminho principal e B é NF no ramo de desvio. Quando o bypass está ativo, a carga é desviada.";
+            exp = "Y = ¬A · B";
+
+            ladder =
+                "A NF + ramo Bypass NF";
+
+            cond =
+                "A deve conduzir e o bypass deve estar aberto";
 
             break;
     }
 
-    info.innerHTML =
-        "<strong>" + title + "</strong><br>" +
-        description +
-        "<br><span class='formula'>" +
-        formula +
-        "</span>";
+    expression.textContent = exp;
+    ladderInfo.textContent = ladder;
+    condition.textContent = cond;
+
+    lampStatus.textContent =
+        Y
+        ? "1 — LIGADA"
+        : "0 — APAGADA";
 }
 
 
 /* =========================================================
-   TABELA-VERDADE
+   DESENHO DO LADDER
 ========================================================= */
 
-function updateTruthTable(){
+function drawLadder(Y,signal,bypass){
 
-    const head =
-        document.getElementById("truthHead");
+    circuit.innerHTML = "";
 
-    const body =
-        document.getElementById("truthBody");
+    const type = state.logic;
 
-    head.innerHTML = "";
-    body.innerHTML = "";
+    if(type === "BYPASS"){
 
-    if(state.logic === "NOT" ||
-       state.logic === "BUFFER"){
-
-        head.innerHTML = `
-            <tr>
-                <th>A</th>
-                <th>Y</th>
-            </tr>
-        `;
-
-        for(let a=0;a<=1;a++){
-
-            const y =
-                calculate(a,0,state.logic);
-
-            const active =
-                a === state.A;
-
-            body.innerHTML += `
-                <tr class="${active ? "active" : ""}">
-                    <td>${a}</td>
-                    <td>${y}</td>
-                </tr>
-            `;
-        }
+        drawBypass(Y,signal,bypass);
 
         return;
     }
 
 
-    head.innerHTML = `
-        <tr>
-            <th>A</th>
-            <th>B</th>
-            <th>Y</th>
-        </tr>
-    `;
+    if(type === "BUFFER"){
 
-
-    if(state.logic === "BYPASS"){
-
-        for(let a=0;a<=1;a++){
-
-            for(let b=0;b<=1;b++){
-
-                const result =
-                    a === 0 && b === 1
-                        ? 1
-                        : 0;
-
-                const active =
-                    a === state.A &&
-                    b === state.B;
-
-                body.innerHTML += `
-                    <tr class="${active ? "active" : ""}">
-                        <td>${a}</td>
-                        <td>${b}</td>
-                        <td>${result}</td>
-                    </tr>
-                `;
-            }
-        }
+        drawSingleContact(
+            "A",
+            state.A,
+            "NA",
+            500,
+            true
+        );
 
         return;
     }
 
 
-    for(let a=0;a<=1;a++){
+    if(type === "NOT"){
 
-        for(let b=0;b<=1;b++){
+        drawSingleContact(
+            "A",
+            state.A,
+            "NF",
+            500,
+            true
+        );
 
-            const y =
-                calculate(a,b,state.logic);
+        return;
+    }
 
-            const active =
-                a === state.A &&
-                b === state.B;
 
-            body.innerHTML += `
-                <tr class="${active ? "active" : ""}">
-                    <td>${a}</td>
-                    <td>${b}</td>
-                    <td>${y}</td>
-                </tr>
-            `;
-        }
+    if(type === "AND" || type === "SERIES"){
+
+        drawSeries();
+
+        return;
+    }
+
+
+    if(type === "OR" || type === "PARALLEL"){
+
+        drawParallel();
+
+        return;
+    }
+
+
+    if(
+        type === "NAND" ||
+        type === "NOR" ||
+        type === "XOR" ||
+        type === "XNOR"
+    ){
+
+        drawGate(type);
+
+        return;
     }
 }
 
 
 /* =========================================================
-   STATUS
+   CONTATO SVG
 ========================================================= */
 
-function updateStatus(){
+function drawContact(
+    x,
+    y,
+    label,
+    type,
+    logicalState,
+    conducting
+){
 
-    const a =
-        document.getElementById("statusA");
+    const ns = "http://www.w3.org/2000/svg";
 
-    const b =
-        document.getElementById("statusB");
+    /*
+       Para NA:
+       estado 0 = aberto
+       estado 1 = fechado
 
-    const supply =
-        document.getElementById("statusSupply");
+       Para NF:
+       estado 0 = fechado
+       estado 1 = aberto
+    */
 
-    const signal =
-        document.getElementById("statusSignal");
-
-    const y =
-        document.getElementById("statusY");
-
-    const bypass =
-        document.getElementById("statusBypass");
-
-
-    a.textContent = state.A;
-    b.textContent = state.B;
-    supply.textContent = state.supply;
-    signal.textContent = state.signal;
-    y.textContent = state.Y;
-    bypass.textContent = state.bypass;
+    const closed =
+        type === "NA"
+        ? logicalState === 1
+        : logicalState === 0;
 
 
-    [a,b,supply,signal,y,bypass].forEach(el => {
-
-        el.classList.remove(
-            "value-on",
-            "value-off"
-        );
-
-        el.classList.add(
-            el.textContent === "1"
-                ? "value-on"
-                : "value-off"
-        );
-
-    });
-}
+    const group = document.createElementNS(
+        ns,
+        "g"
+    );
 
 
-/* =========================================================
-   ATUALIZAÇÃO PRINCIPAL
-========================================================= */
+    /* terminais */
 
-function update(){
+    const left = document.createElementNS(
+        ns,
+        "line"
+    );
 
-    state.supply =
-        Number(
-            document.getElementById("supply").value
-        );
+    left.setAttribute("x1",x-70);
+    left.setAttribute("y1",y);
+    left.setAttribute("x2",x-25);
+    left.setAttribute("y2",y);
+
+    left.setAttribute(
+        "class",
+        "power-line " +
+        (conducting ? "live" : "")
+    );
 
 
-    state.logic =
-        document.getElementById("logicType").value;
+    const right = document.createElementNS(
+        ns,
+        "line"
+    );
+
+    right.setAttribute("x1",x+25);
+    right.setAttribute("y1",y);
+    right.setAttribute("x2",x+70);
+    right.setAttribute("y2",y);
+
+    right.setAttribute(
+        "class",
+        "power-line " +
+        (conducting ? "live" : "")
+    );
 
 
-    if(state.logic === "BYPASS"){
+    /* contatos */
 
-        const result =
-            calculateBypass();
+    const c1 = document.createElementNS(
+        ns,
+        "line"
+    );
 
-        state.signal =
-            result.signal;
+    c1.setAttribute("x1",x-25);
+    c1.setAttribute("y1",y-30);
+    c1.setAttribute("x2",x-25);
+    c1.setAttribute("y2",y+30);
 
-        state.bypass =
-            result.bypass;
+    c1.setAttribute(
+        "class",
+        "contact " +
+        (closed && conducting ? "live" : "")
+    );
 
-        state.Y =
-            result.Y;
+
+    const c2 = document.createElementNS(
+        ns,
+        "line"
+    );
+
+    c2.setAttribute("x1",x+25);
+    c2.setAttribute("y1",y-30);
+
+    if(closed){
+
+        c2.setAttribute("x2",x+25);
+        c2.setAttribute("y2",y+30);
 
     }else{
 
-        state.signal =
-            state.supply;
-
-        state.bypass =
-            0;
-
-        const logicResult =
-            calculate(
-                state.A,
-                state.B,
-                state.logic
-            );
-
-        /*
-           Se a alimentação estiver desligada,
-           a saída física da Ladder fica desligada.
-        */
-
-        state.Y =
-            state.supply === 1
-                ? logicResult
-                : 0;
+        c2.setAttribute("x2",x+45);
+        c2.setAttribute("y2",y-20);
     }
 
+    c2.setAttribute(
+        "class",
+        "contact " +
+        (closed && conducting
+            ? "live"
+            : "open")
+    );
 
-    updateStatus();
-    updateLogicInfo();
-    updateTruthTable();
-    render();
+
+    group.appendChild(left);
+    group.appendChild(right);
+    group.appendChild(c1);
+    group.appendChild(c2);
+
+
+    /* nome */
+
+    const text = document.createElementNS(
+        ns,
+        "text"
+    );
+
+    text.setAttribute("x",x);
+    text.setAttribute("y",y-48);
+    text.setAttribute("class","contact-label");
+    text.textContent = label;
+
+    group.appendChild(text);
+
+
+    /* tipo */
+
+    const typeText = document.createElementNS(
+        ns,
+        "text"
+    );
+
+    typeText.setAttribute("x",x);
+    typeText.setAttribute("y",y+50);
+    typeText.setAttribute("class","contact-type");
+
+    typeText.textContent =
+        type + " — " +
+        (closed ? "FECHADO" : "ABERTO");
+
+    group.appendChild(typeText);
+
+
+    /* estado */
+
+    const stateText = document.createElementNS(
+        ns,
+        "text"
+    );
+
+    stateText.setAttribute("x",x);
+    stateText.setAttribute("y",y+70);
+    stateText.setAttribute("class","contact-state");
+
+    stateText.textContent =
+        "LÓGICO = " + logicalState;
+
+    group.appendChild(stateText);
+
+
+    circuit.appendChild(group);
 }
 
 
 /* =========================================================
-   EVENTOS
+   CONTATO ÚNICO
 ========================================================= */
 
-document
-    .getElementById("btnA")
-    .addEventListener(
-        "click",
-        toggleA
+function drawSingleContact(
+    label,
+    value,
+    type,
+    y,
+    load
+){
+
+    const conducting =
+        state.supply === 1 &&
+        (
+            type === "NA"
+            ? value === 1
+            : value === 0
+        );
+
+
+    drawLine(90,y,430,y,conducting);
+
+    drawContact(
+        500,
+        y,
+        label,
+        type,
+        value,
+        conducting
     );
 
 
-document
-    .getElementById("btnB")
-    .addEventListener(
-        "click",
-        toggleB
+    drawLine(570,y,820,y,conducting);
+
+    drawLamp(
+        855,
+        y,
+        calculateY(
+            state.A,
+            state.B,
+            state.logic
+        )
     );
-
-
-document
-    .getElementById("btnReset")
-    .addEventListener(
-        "click",
-        resetAll
-    );
-
-
-document
-    .getElementById("logicType")
-    .addEventListener(
-        "change",
-        update
-    );
-
-
-document
-    .getElementById("supply")
-    .addEventListener(
-        "change",
-        update
-    );
+}
 
 
 /* =========================================================
-   PROTEÇÃO CONTRA TELA BRANCA
+   SÉRIE
 ========================================================= */
 
-window.addEventListener(
-    "error",
-    function(event){
+function drawSeries(){
 
-        const message =
-            document.getElementById("message");
+    const y = 250;
 
-        if(message){
+    const yResult =
+        state.A && state.B
+        ? 1
+        : 0;
 
-            message.className =
-                "message error";
+    const cA =
+        state.supply &&
+        state.A;
 
-            message.innerHTML =
-                "<strong>ERRO NO SIMULADOR:</strong><br>" +
-                event.message;
+    const cB =
+        state.supply &&
+        state.A &&
+        state.B;
+
+    drawLine(90,y,260,y,!!cA);
+
+    drawContact(
+        320,
+        y,
+        "A",
+        "NA",
+        state.A,
+        !!cA
+    );
+
+    drawLine(390,y,500,y,!!cA);
+
+    drawContact(
+        560,
+        y,
+        "B",
+        "NA",
+        state.B,
+        !!cB
+    );
+
+    drawLine(630,y,820,y,!!cB);
+
+    drawLamp(
+        855,
+        y,
+        state.supply ? yResult : 0
+    );
+}
+
+
+/* =========================================================
+   PARALELO
+========================================================= */
+
+function drawParallel(){
+
+    const top = 160;
+    const bottom = 340;
+
+    const aConduct =
+        state.supply && state.A;
+
+    const bConduct =
+        state.supply && state.B;
+
+    drawLine(90,250,180,250,state.supply);
+
+    drawLine(
+        180,
+        250,
+        180,
+        top,
+        aConduct
+    );
+
+    drawLine(
+        180,
+        250,
+        180,
+        bottom,
+        bConduct
+    );
+
+
+    drawLine(
+        180,
+        top,
+        250,
+        top,
+        aConduct
+    );
+
+    drawLine(
+        180,
+        bottom,
+        250,
+        bottom,
+        bConduct
+    );
+
+
+    drawContact(
+        310,
+        top,
+        "A",
+        "NA",
+        state.A,
+        !!aConduct
+    );
+
+    drawContact(
+        310,
+        bottom,
+        "B",
+        "NA",
+        state.B,
+        !!bConduct
+    );
+
+
+    drawLine(
+        380,
+        top,
+        600,
+        top,
+        aConduct
+    );
+
+    drawLine(
+        380,
+        bottom,
+        600,
+        bottom,
+        bConduct
+    );
+
+
+    const Y =
+        state.supply &&
+        (state.A || state.B);
+
+
+    drawLine(
+        600,
+        top,
+        600,
+        250,
+        !!(state.supply && state.A)
+    );
+
+    drawLine(
+        600,
+        bottom,
+        600,
+        250,
+        !!(state.supply && state.B)
+    );
+
+    drawLine(
+        600,
+        250,
+        820,
+        250,
+        !!Y
+    );
+
+
+    drawLamp(
+        855,
+        250,
+        Y ? 1 : 0
+    );
+}
+
+
+/* =========================================================
+   PORTAS
+========================================================= */
+
+function drawGate(type){
+
+    const y1 = 150;
+    const y2 = 350;
+
+    let t1 = "NA";
+    let t2 = "NA";
+
+    if(type === "NAND"){
+        t1 = "NC";
+        t2 = "NC";
+    }
+
+    if(type === "NOR"){
+        t1 = "NF";
+        t2 = "NF";
+    }
+
+
+    if(type === "XOR" || type === "XNOR"){
+
+        drawXorDiagram(type);
+
+        return;
+    }
+
+
+    const condA =
+        t1 === "NA"
+        ? state.A === 1
+        : state.A === 0;
+
+    const condB =
+        t2 === "NA"
+        ? state.B === 1
+        : state.B === 0;
+
+
+    const y =
+        state.supply
+        ? calculateY(
+            state.A,
+            state.B,
+            type
+        )
+        : 0;
+
+
+    drawLine(
+        90,
+        250,
+        180,
+        250,
+        state.supply
+    );
+
+
+    drawLine(
+        180,
+        250,
+        180,
+        y1,
+        state.supply && condA
+    );
+
+    drawLine(
+        180,
+        250,
+        180,
+        y2,
+        state.supply && condB
+    );
+
+
+    drawLine(
+        180,
+        y1,
+        250,
+        y1,
+        state.supply && condA
+    );
+
+    drawLine(
+        180,
+        y2,
+        250,
+        y2,
+        state.supply && condB
+    );
+
+
+    drawContact(
+        310,
+        y1,
+        "A",
+        t1 === "NC" ? "NF" : t1,
+        state.A,
+        !!(state.supply && condA)
+    );
+
+
+    drawContact(
+        310,
+        y2,
+        "B",
+        t2 === "NC" ? "NF" : t2,
+        state.B,
+        !!(state.supply && condB)
+    );
+
+
+    drawLine(
+        380,
+        y1,
+        600,
+        y1,
+        state.supply && condA
+    );
+
+    drawLine(
+        380,
+        y2,
+        600,
+        y2,
+        state.supply && condB
+    );
+
+
+    drawLine(
+        600,
+        y1,
+        600,
+        250,
+        state.supply && condA
+    );
+
+    drawLine(
+        600,
+        y2,
+        600,
+        250,
+        state.supply && condB
+    );
+
+
+    drawLine(
+        600,
+        250,
+        820,
+        250,
+        !!y
+    );
+
+
+    drawLamp(
+        855,
+        250,
+        y
+    );
+}
+
+
+/* =========================================================
+   XOR / XNOR
+========================================================= */
+
+function drawXorDiagram(type){
+
+    const top = 120;
+    const bottom = 380;
+
+    const y =
+        state.supply
+        ? calculateY(
+            state.A,
+            state.B,
+            type
+        )
+        : 0;
+
+
+    /*
+       Ramo 1:
+       A NF + B NA
+
+       Ramo 2:
+       A NA + B NF
+    */
+
+    const r1a =
+        state.A === 0;
+
+    const r1b =
+        state.B === 1;
+
+    const r2a =
+        state.A === 1;
+
+    const r2b =
+        state.B === 0;
+
+
+    const branch1 =
+        state.supply &&
+        r1a &&
+        r1b;
+
+    const branch2 =
+        state.supply &&
+        r2a &&
+        r2b;
+
+
+    drawLine(
+        90,
+        250,
+        150,
+        250,
+        state.supply
+    );
+
+
+    drawLine(
+        150,
+        250,
+        150,
+        top,
+        state.supply && r1a
+    );
+
+    drawLine(
+        150,
+        250,
+        150,
+        bottom,
+        state.supply && r2a
+    );
+
+
+    drawLine(
+        150,
+        top,
+        220,
+        top,
+        state.supply && r1a
+    );
+
+    drawLine(
+        150,
+        bottom,
+        220,
+        bottom,
+        state.supply && r2a
+    );
+
+
+    drawContact(
+        280,
+        top,
+        "A",
+        "NF",
+        state.A,
+        !!(state.supply && r1a)
+    );
+
+
+    drawContact(
+        280,
+        bottom,
+        "A",
+        "NA",
+        state.A,
+        !!(state.supply && r2a)
+    );
+
+
+    drawLine(
+        350,
+        top,
+        430,
+        top,
+        state.supply && r1a
+    );
+
+    drawLine(
+        350,
+        bottom,
+        430,
+        bottom,
+        state.supply && r2a
+    );
+
+
+    drawContact(
+        500,
+        top,
+        "B",
+        "NA",
+        state.B,
+        !!(state.supply && r1a && r1b)
+    );
+
+
+    drawContact(
+        500,
+        bottom,
+        "B",
+        "NF",
+        state.B,
+        !!(state.supply && r2a && r2b)
+    );
+
+
+    drawLine(
+        570,
+        top,
+        650,
+        top,
+        branch1
+    );
+
+    drawLine(
+        570,
+        bottom,
+        650,
+        bottom,
+        branch2
+    );
+
+
+    drawLine(
+        650,
+        top,
+        650,
+        250,
+        branch1
+    );
+
+    drawLine(
+        650,
+        bottom,
+        650,
+        250,
+        branch2
+    );
+
+
+    drawLine(
+        650,
+        250,
+        820,
+        250,
+        !!y
+    );
+
+
+    drawLamp(
+        855,
+        250,
+        y
+    );
+
+
+    const ns = "http://www.w3.org/2000/svg";
+
+    const title =
+        document.createElementNS(
+            ns,
+            "text"
+        );
+
+    title.setAttribute("x",500);
+    title.setAttribute("y",70);
+    title.setAttribute(
+        "fill",
+        "#93c5fd"
+    );
+    title.setAttribute(
+        "font-size",
+        "18"
+    );
+    title.setAttribute(
+        "font-weight",
+        "bold"
+    );
+    title.setAttribute(
+        "text-anchor",
+        "middle"
+    );
+
+    title.textContent =
+        type === "XOR"
+        ? "Ramo 1: A NF + B NA   |   Ramo 2: A NA + B NF"
+        : "Ramo 1: A NF + B NF   |   Ramo 2: A NA + B NA";
+
+    circuit.appendChild(title);
+}
+
+
+/* =========================================================
+   BYPASS
+========================================================= */
+
+function drawBypass(Y,signal,bypass){
+
+    const mainY = 190;
+    const branchY = 330;
+
+    const signalAfterA =
+        state.supply &&
+        state.A === 0;
+
+
+    /* entrada */
+
+    drawLine(
+        90,
+        mainY,
+        250,
+        mainY,
+        state.supply
+    );
+
+
+    /* A NF */
+
+    drawContact(
+        320,
+        mainY,
+        "A",
+        "NF",
+        state.A,
+        !!signalAfterA
+    );
+
+
+    drawLine(
+        390,
+        mainY,
+        480,
+        mainY,
+        !!signalAfterA
+    );
+
+
+    /* DERIVAÇÃO */
+
+    drawLine(
+        480,
+        mainY,
+        480,
+        branchY,
+        !!signalAfterA
+    );
+
+    drawLine(
+        480,
+        branchY,
+        550,
+        branchY,
+        !!bypass
+    );
+
+
+    drawContact(
+        620,
+        branchY,
+        "BYPASS",
+        "NF",
+        state.B,
+        !!bypass
+    );
+
+
+    drawLine(
+        690,
+        branchY,
+        760,
+        branchY,
+        !!bypass
+    );
+
+
+    /* ramo principal */
+
+    drawLine(
+        480,
+        mainY,
+        760,
+        mainY,
+        !!Y
+    );
+
+
+    /* retorno */
+
+    drawLine(
+        760,
+        mainY,
+        760,
+        250,
+        !!Y
+    );
+
+    drawLine(
+        760,
+        branchY,
+        760,
+        250,
+        !!bypass
+    );
+
+
+    drawLine(
+        760,
+        250,
+        820,
+        250,
+        !!Y
+    );
+
+
+    drawLamp(
+        855,
+        250,
+        Y
+    );
+
+
+    /* legenda do bypass */
+
+    const ns = "http://www.w3.org/2000/svg";
+
+    const text =
+        document.createElementNS(
+            ns,
+            "text"
+        );
+
+    text.setAttribute(
+        "x",
+        530
+    );
+
+    text.setAttribute(
+        "y",
+        410
+    );
+
+    text.setAttribute(
+        "class",
+        "branch-label"
+    );
+
+    text.textContent =
+        bypass
+        ? "BYPASS CONDUZINDO"
+        : "BYPASS NÃO CONDUZINDO";
+
+    circuit.appendChild(text);
+
+
+    const signalText =
+        document.createElementNS(
+            ns,
+            "text"
+        );
+
+    signalText.setAttribute(
+        "x",
+        440
+    );
+
+    signalText.setAttribute(
+        "y",
+        165
+    );
+
+    signalText.setAttribute(
+        "class",
+        signal
+        ? "signal-label"
+        : "signal-label off"
+    );
+
+    signalText.textContent =
+        "SINAL APÓS A = " + signal;
+
+    circuit.appendChild(signalText);
+}
+
+
+/* =========================================================
+   LINHA SVG
+========================================================= */
+
+function drawLine(
+    x1,
+    y1,
+    x2,
+    y2,
+    live
+){
+
+    const ns =
+        "http://www.w3.org/2000/svg";
+
+    const line =
+        document.createElementNS(
+            ns,
+            "line"
+        );
+
+    line.setAttribute("x1",x1);
+    line.setAttribute("y1",y1);
+    line.setAttribute("x2",x2);
+    line.setAttribute("y2",y2);
+
+    line.setAttribute(
+        "class",
+        "power-line " +
+        (live ? "live" : "")
+    );
+
+    circuit.appendChild(line);
+}
+
+
+/* =========================================================
+   LÂMPADA
+========================================================= */
+
+function drawLamp(x,y,on){
+
+    const ns =
+        "http://www.w3.org/2000/svg";
+
+
+    const circle =
+        document.createElementNS(
+            ns,
+            "circle"
+        );
+
+    circle.setAttribute("cx",x);
+    circle.setAttribute("cy",y);
+    circle.setAttribute("r",30);
+
+    circle.setAttribute(
+        "class",
+        "lamp " +
+        (on ? "on" : "")
+    );
+
+    circuit.appendChild(circle);
+
+
+    /* filamento */
+
+    const filament =
+        document.createElementNS(
+            ns,
+            "path"
+        );
+
+    filament.setAttribute(
+        "d",
+        `
+        M ${x-12} ${y-10}
+        L ${x-5} ${y+5}
+        L ${x+5} ${y-5}
+        L ${x+12} ${y+10}
+        `
+    );
+
+    filament.setAttribute(
+        "fill",
+        "none"
+    );
+
+    filament.setAttribute(
+        "stroke",
+        on ? "#92400e" : "#64748b"
+    );
+
+    filament.setAttribute(
+        "stroke-width",
+        "4"
+    );
+
+    circuit.appendChild(filament);
+
+
+    const text =
+        document.createElementNS(
+            ns,
+            "text"
+        );
+
+    text.setAttribute(
+        "x",
+        x
+    );
+
+    text.setAttribute(
+        "y",
+        y+55
+    );
+
+    text.setAttribute(
+        "class",
+        "lamp-text"
+    );
+
+    text.textContent =
+        on
+        ? "Y — ACESA"
+        : "Y — APAGADA";
+
+    circuit.appendChild(text);
+}
+
+
+/* =========================================================
+   TABELA VERDADE
+========================================================= */
+
+function drawTruthTable(){
+
+    truthHead.innerHTML = "";
+    truthBody.innerHTML = "";
+
+    const twoInputs =
+        !(
+            state.logic === "BUFFER" ||
+            state.logic === "NOT"
+        );
+
+
+    let header =
+        "<tr>" +
+        "<th>A</th>";
+
+    if(twoInputs){
+        header += "<th>B</th>";
+    }
+
+    header += "<th>Y</th></tr>";
+
+    truthHead.innerHTML = header;
+
+
+    if(twoInputs){
+
+        for(let A=0; A<=1; A++){
+
+            for(let B=0; B<=1; B++){
+
+                let Y;
+
+                if(state.logic === "BYPASS"){
+
+                    Y =
+                        (!A && B)
+                        ? 1
+                        : 0;
+
+                }else{
+
+                    Y =
+                        calculateY(
+                            A,
+                            B,
+                            state.logic
+                        );
+                }
+
+
+                addTruthRow(
+                    A,
+                    B,
+                    Y,
+                    true
+                );
+            }
         }
 
-        console.error(event.error);
+    }else{
+
+        for(let A=0; A<=1; A++){
+
+            const Y =
+                calculateY(
+                    A,
+                    0,
+                    state.logic
+                );
+
+            addTruthRow(
+                A,
+                0,
+                Y,
+                false
+            );
+        }
     }
+}
+
+
+/* =========================================================
+   LINHA DA TABELA
+========================================================= */
+
+function addTruthRow(
+    A,
+    B,
+    Y,
+    twoInputs
+){
+
+    const tr =
+        document.createElement("tr");
+
+
+    tr.innerHTML =
+        `
+        <td class="${A ? "one" : "zero"}">
+            ${A}
+        </td>
+        `;
+
+
+    if(twoInputs){
+
+        tr.innerHTML +=
+            `
+            <td class="${B ? "one" : "zero"}">
+                ${B}
+            </td>
+            `;
+    }
+
+
+    tr.innerHTML +=
+        `
+        <td class="${Y ? "one" : "zero"}">
+            ${Y}
+            ${Y ? " — LIGADA" : " — DESLIGADA"}
+        </td>
+        `;
+
+
+    truthBody.appendChild(tr);
+}
+
+
+/* =========================================================
+   BOTÕES
+========================================================= */
+
+document.getElementById("btnA")
+.addEventListener(
+    "click",
+    function(){
+
+        state.A =
+            state.A === 0
+            ? 1
+            : 0;
+
+        update();
+    }
+);
+
+
+document.getElementById("btnB")
+.addEventListener(
+    "click",
+    function(){
+
+        state.B =
+            state.B === 0
+            ? 1
+            : 0;
+
+        update();
+    }
+);
+
+
+document.getElementById("btnReset")
+.addEventListener(
+    "click",
+    function(){
+
+        state.A = 0;
+        state.B = 0;
+        state.supply = 1;
+
+        logicType.value =
+            "BUFFER";
+
+        supplySelect.value =
+            "1";
+
+        update();
+    }
+);
+
+
+logicType.addEventListener(
+    "change",
+    update
+);
+
+
+supplySelect.addEventListener(
+    "change",
+    update
 );
 
 
@@ -2112,24 +2502,7 @@ window.addEventListener(
    INICIALIZAÇÃO
 ========================================================= */
 
-try{
-
-    update();
-
-}catch(error){
-
-    console.error(error);
-
-    const message =
-        document.getElementById("message");
-
-    message.className =
-        "message error";
-
-    message.innerHTML =
-        "<strong>Erro ao iniciar o simulador:</strong><br>" +
-        error.message;
-}
+update();
 
 </script>
 
